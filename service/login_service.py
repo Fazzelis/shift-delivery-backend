@@ -7,13 +7,15 @@ from utils.password_hashing import match_hash
 from schemas.response.login_registration_response import LoginRegistrationResponse
 from schemas.JwtTokenSchema import TokenInfo
 from utils.jwt_utils import encode_jwt
+from fastapi import Response
+from configuration import settings
 
 
 class LoginService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def login(self, payload: LoginRegistrationSchema):
+    async def login(self, payload: LoginRegistrationSchema, response: Response):
         result = await self.db.execute(select(User).where(User.email == payload.email))
         optional_user = result.scalar_one_or_none()
         if not optional_user:
@@ -21,15 +23,37 @@ class LoginService:
         if not match_hash(payload.password, optional_user.password_hash):
             raise HTTPException(status_code=409, detail="Password is not correct")
 
-        jwt_payload = {
+        access_jwt_payload = {
             "sub": str(optional_user.id)
         }
-        jwt_token = encode_jwt(payload=jwt_payload)
+        refresh_jwt_payload = {
+            "sub": str(optional_user.id)
+        }
+
+        access_token = encode_jwt(payload=access_jwt_payload, token_type="access")
+        refresh_token = encode_jwt(payload=refresh_jwt_payload, token_type="refresh")
+
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+            max_age=settings.expiration_time_of_refresh_token
+        )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+            max_age=settings.expiration_time_of_access_token
+        )
 
         return LoginRegistrationResponse(
             status="success",
             token_info=TokenInfo(
-                token=jwt_token,
+                token=access_token,
                 token_type="Bearer"
             )
         )
