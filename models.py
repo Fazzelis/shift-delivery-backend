@@ -28,4 +28,11 @@ class Package(Base):
     name = Column(String)
     length = Column(Integer)# см
     width = Column(Integer)# см
-    height = Column(String)# см
+    height = Column(Integer)# см
+    icon_id = Column(UUID)
+
+
+class Attachment(Base):
+    __tablename__ = "attachment"
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.gen_random_uuid())
+    path = Column(String, unique=True)

@@ -8,7 +8,7 @@ from fastapi import Response
 
 router = APIRouter(
     prefix="/registration",
-    tags=["Registration"]
+    tags=["Auth"]
 )
 
 

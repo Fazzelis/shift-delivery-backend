@@ -56,6 +56,7 @@ class RegistrationService:
             status="success",
             token_info=TokenInfo(
                 token=access_jwt_token,
+                user_id=new_user.id,
                 token_type="Bearer"
             )
         )

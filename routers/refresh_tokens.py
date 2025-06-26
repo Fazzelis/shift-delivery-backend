@@ -8,7 +8,7 @@ from schemas.response.login_registration_response import LoginRegistrationRespon
 
 router = APIRouter(
     prefix="/refresh",
-    tags=["Refresh Jwt"]
+    tags=["Auth"]
 )
 
 

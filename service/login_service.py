@@ -54,6 +54,7 @@ class LoginService:
             status="success",
             token_info=TokenInfo(
                 token=access_token,
+                user_id=optional_user.id,
                 token_type="Bearer"
             )
         )
