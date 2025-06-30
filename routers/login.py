@@ -4,7 +4,7 @@ from schemas.login_registration_schema import LoginRegistrationSchema
 from service.login_service import LoginService
 from database.get_session import get_db
 from schemas.response.login_registration_response import LoginRegistrationResponse
-from fastapi import Response
+from fastapi import Response, Request
 
 router = APIRouter(
     prefix="/login",

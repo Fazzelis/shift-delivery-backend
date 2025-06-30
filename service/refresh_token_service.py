@@ -35,7 +35,6 @@ class RefreshTokenService:
                 key="refresh_token",
                 value=refresh_token,
                 httponly=True,
-                secure=True,
                 samesite="lax",
                 max_age=settings.expiration_time_of_refresh_token
             )
@@ -43,13 +42,13 @@ class RefreshTokenService:
                 key="access_token",
                 value=access_token,
                 httponly=True,
-                secure=True,
                 samesite="lax",
                 max_age=settings.expiration_time_of_access_token
             )
 
             return LoginRegistrationResponse(
                 status="success",
+                user_id=optional_user.id,
                 token_info=TokenInfo(
                     token=access_token,
                     token_type="Bearer"

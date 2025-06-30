@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/refresh", response_model=LoginRegistrationResponse)
+@router.post("", response_model=LoginRegistrationResponse)
 async def refresh_tokens(
         response: Response,
         db: AsyncSession = Depends(get_db),

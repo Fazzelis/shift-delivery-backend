@@ -7,7 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(router)
-origins = ["*"]
+origins = ["http://26.37.85.77:3000"]
+# origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

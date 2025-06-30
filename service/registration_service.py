@@ -39,7 +39,6 @@ class RegistrationService:
             key="refresh_token",
             value=refresh_jwt_token,
             httponly=True,
-            secure=True,
             samesite="lax",
             max_age=settings.expiration_time_of_refresh_token
         )
@@ -47,16 +46,15 @@ class RegistrationService:
             key="access_token",
             value=access_jwt_token,
             httponly=True,
-            secure=True,
             samesite="lax",
             max_age=settings.expiration_time_of_access_token
         )
 
         return LoginRegistrationResponse(
             status="success",
+            user_id=new_user.id,
             token_info=TokenInfo(
                 token=access_jwt_token,
-                user_id=new_user.id,
                 token_type="Bearer"
             )
         )
