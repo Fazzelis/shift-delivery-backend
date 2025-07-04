@@ -14,6 +14,8 @@ class User(Base):
     middle_name = Column(String)
     password_hash = Column(String)
     orders = relationship("Order", back_populates="user")
+    city_id = Column(UUID(as_uuid=True), ForeignKey("city.id"))
+    city = relationship("City", back_populates="users")
 
 
 class City(Base):
@@ -22,6 +24,7 @@ class City(Base):
     name = Column(String, unique=True)
     lat = Column(String)
     lon = Column(String)
+    users = relationship("User", back_populates="city")
 
 
 class Package(Base):

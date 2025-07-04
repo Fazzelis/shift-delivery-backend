@@ -21,8 +21,8 @@ def encode_jwt(
     now = datetime.now(timezone.utc)
     expire_time = now + timedelta(minutes=expire_minutes)
     payload.update(
-        exp=expire_time.timestamp(),
-        iat=now.timestamp()
+        exp=int(expire_time.timestamp()),
+        iat=int(now.timestamp())
     )
     encoded = jwt.encode(
         payload,

@@ -39,16 +39,17 @@ class RegistrationService:
             key="refresh_token",
             value=refresh_jwt_token,
             httponly=True,
-            samesite="lax",
+            secure=True,
+            samesite="none",
             max_age=settings.expiration_time_of_refresh_token
         )
-        response.set_cookie(
-            key="access_token",
-            value=access_jwt_token,
-            httponly=True,
-            samesite="lax",
-            max_age=settings.expiration_time_of_access_token
-        )
+        # response.set_cookie(
+        #     key="access_token",
+        #     value=access_jwt_token,
+        #     httponly=True,
+        #     samesite="lax",
+        #     max_age=settings.expiration_time_of_access_token
+        # )
 
         return LoginRegistrationResponse(
             status="success",

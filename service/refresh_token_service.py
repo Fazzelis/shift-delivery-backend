@@ -15,6 +15,8 @@ class RefreshTokenService:
         self.db = db
 
     async def refresh_token(self, refresh_token: str | None, response: Response) -> LoginRegistrationResponse:
+        if refresh_token is None or refresh_token == "":
+            raise HTTPException(status_code=401, detail="Token not found")
         try:
             user_id = decode_jwt(token=refresh_token)
             result = await self.db.execute(select(User).where(User.id == user_id))
@@ -35,16 +37,17 @@ class RefreshTokenService:
                 key="refresh_token",
                 value=refresh_token,
                 httponly=True,
-                samesite="lax",
+                secure=True,
+                samesite="none",
                 max_age=settings.expiration_time_of_refresh_token
             )
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                httponly=True,
-                samesite="lax",
-                max_age=settings.expiration_time_of_access_token
-            )
+            # response.set_cookie(
+            #     key="access_token",
+            #     value=access_token,
+            #     httponly=True,
+            #     samesite="lax",
+            #     max_age=settings.expiration_time_of_access_token
+            # )
 
             return LoginRegistrationResponse(
                 status="success",
