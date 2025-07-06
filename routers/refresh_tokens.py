@@ -18,4 +18,5 @@ async def refresh_tokens(
         db: AsyncSession = Depends(get_db),
         refresh_token: str | None = Cookie(default=None)
         ):
+    print(refresh_token)
     return await RefreshTokenService(db).refresh_token(refresh_token=refresh_token, response=response)

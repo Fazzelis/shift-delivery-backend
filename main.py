@@ -9,7 +9,7 @@ app = FastAPI()
 app.include_router(router)
 origins = [
     "http://26.37.85.77:3000",
-    "http://26.122.80.20"
+    "https://26.122.80.20"
 ]
 # origins = ["*"]
 app.add_middleware(
@@ -26,3 +26,5 @@ async def create_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     # await fill_cities_info()
+
+# старт: uvicorn main:app --host {ip} --port {default -> 8000} --ssl-certfile cert.pem --ssl-keyfile key.pem --reload

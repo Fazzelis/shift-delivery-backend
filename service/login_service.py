@@ -39,15 +39,8 @@ class LoginService:
             httponly=True,
             secure=True,
             samesite="none",
-            max_age=settings.expiration_time_of_refresh_token
+            max_age=settings.expiration_time_of_refresh_token_for_browser
         )
-        # response.set_cookie(
-        #     key="access_token",
-        #     value=access_token,
-        #     httponly=True,
-        #     samesite="lax",
-        #     max_age=settings.expiration_time_of_access_token
-        # )
 
         return LoginRegistrationResponse(
             status="success",
