@@ -62,17 +62,6 @@ class UserService:
             for key, value in new_data.items():
                 setattr(optional_user, key, value)
 
-            # if new_user_info.last_name is not None:
-            #     optional_user.last_name = new_user_info.last_name
-            # if new_user_info.first_name is not None:
-            #     optional_user.first_name = new_user_info.first_name
-            # if new_user_info.middle_name is not None:
-            #     optional_user.middle_name = new_user_info.middle_name
-            # if new_user_info.phone_number is not None:
-            #     optional_user.phone_number = new_user_info.phone_number
-            # if new_user_info.city_id is not None:
-            #     optional_user.city_id = new_user_info.city_id
-
             self.db.add(optional_user)
             await self.db.commit()
             await self.db.refresh(optional_user)

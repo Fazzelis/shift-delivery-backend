@@ -4,6 +4,7 @@ from datetime import datetime, timezone, timedelta
 import jwt
 from configuration import settings
 from fastapi import HTTPException
+from jwt.exceptions import DecodeError
 
 
 def encode_jwt(
@@ -33,10 +34,13 @@ def encode_jwt(
 
 
 def decode_jwt(token, public_key: str = os.getenv("PUBLIC_KEY"), algorithm: str = os.getenv("ALGORITHM")):
-    decoded = jwt.decode(
-        token,
-        public_key,
-        algorithms=[algorithm],
-        leeway=10
-    )
-    return uuid.UUID(decoded["sub"])
+    try:
+        decoded = jwt.decode(
+            token,
+            public_key,
+            algorithms=[algorithm],
+            leeway=10
+        )
+        return uuid.UUID(decoded["sub"])
+    except DecodeError:
+        raise HTTPException(status_code=401, detail="Invalid token")

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.get_session import get_db
 from service.user_service import UserService
@@ -16,10 +16,11 @@ router = APIRouter(
 
 @router.get("/info", response_model=UserResponse)
 async def get_info_about_user(
-        # encoded_jwt: str | None = Header(None, alias="Authorization"),
+        # encoded_jwt: str | None = Header(None, alias="Authorization"), ПЕРЕЙТИ С HTTP_BEARER НА НОРМАЛЬНУЮ РЕАЛИЗАЦИЮ
         encoded_jwt: HTTPAuthorizationCredentials = Depends(settings.http_bearer),
         db: AsyncSession = Depends(get_db)
         ):
+    print(encoded_jwt.credentials)
     return await UserService(db).get_user_info(encoded_jwt.credentials)
 
 

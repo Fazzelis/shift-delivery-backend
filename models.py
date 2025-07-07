@@ -46,10 +46,19 @@ class Attachment(Base):
 class Order(Base):
     __tablename__ = "order"
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, server_default=func.gen_random_uuid())
-    delivery_type = Column(Boolean)
     user_id = Column(UUID(as_uuid=True), ForeignKey("user.id"))
     user = relationship("User", back_populates="orders")
     to_surname = Column(String)
     to_name = Column(String)
     to_middle_name = Column(String)
     to_email = Column(String)
+    delivery_type = relationship("DeliveryType", back_populates="orders")
+    delivery_type_id = Column(Integer, ForeignKey("delivery_type.id"))
+
+
+class DeliveryType(Base):
+    __tablename__ = 'delivery_type'
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String, unique=True)
+    cost = Column(Integer)
+    orders = relationship("Order", back_populates="delivery_type")

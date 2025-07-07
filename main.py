@@ -4,12 +4,16 @@ from models import User, City
 from routers.routers import router
 from utils.city_utils import fill_cities_info
 from fastapi.middleware.cors import CORSMiddleware
+from os import getenv
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = FastAPI()
 app.include_router(router)
 origins = [
-    "http://26.37.85.77:3000",
-    "https://26.122.80.20"
+    getenv("FRONTEND_IP"),
+    getenv("BACKEND_IP")
 ]
 # origins = ["*"]
 app.add_middleware(
@@ -28,3 +32,5 @@ async def create_tables():
     # await fill_cities_info()
 
 # старт: uvicorn main:app --host {ip} --port {default -> 8000} --ssl-certfile cert.pem --ssl-keyfile key.pem --reload
+# uvicorn main:app --host 26.122.80.20 --port 8000 --ssl-certfile cert.pem --ssl-keyfile key.pem --reload
+

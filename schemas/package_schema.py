@@ -10,9 +10,9 @@ class PackageSchema(BaseModel):
     height: int
     icon_id: UUID | None
 
-    # class Config:
+    class Config:
+        from_attributes = True
     #     orm_mode = True
-    #     from_attributes = True
 
 
 class PackagePost(BaseModel):
